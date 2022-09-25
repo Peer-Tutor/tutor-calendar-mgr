@@ -55,7 +55,7 @@ public class TutorCalendarController {
     // do not remove this
     @GetMapping(path="/health")
     public @ResponseBody String healthCheck(){
-        return "Ok";
+        return "Ok 2";
     }
 
     @PostMapping(path = "/add")
