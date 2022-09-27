@@ -11,5 +11,6 @@ import java.util.List;
 public interface TutorCalendarRepository extends JpaRepository<TutorCalendar, Long> {
     List<TutorCalendar> findByLastName(String lastName);
     TutorCalendar findById(long id);
+    TutorCalendar findByTutorId(long id);
 }
 
