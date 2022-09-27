@@ -1,0 +1,49 @@
+version: 0.2
+env:
+  parameter-store:
+    DB_URL: "/dev/RDS/port"
+    DB_PORT: "/dev/RDS/port"
+    SPRING_PROFILE_ACTIVE: "/dev/app/profile"
+    MYSQLDB_DATABASE: "/dev/RDS/dbName"
+    MYSQLDB_ROOT_PASSWORD: "/dev/RDS/password"
+    MYSQLDB_USER: "/dev/RDS/user"
+    JWT_SECRET: "/dev/accountMgr/jwtSecret"
+    JWT_EXPIRY_DURATION: "/dev/accountMgr/jwtExpiry"
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR....
+      - aws --version
+      - #$(aws ecr get-login --no-include-email --region ap-southeast-1)
+      - aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin 416519539882.dkr.ecr.ap-southeast-1.amazonaws.com
+      # Get commit hash value to tag the image
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=${COMMIT_HASH:=latest}
+      # Replace with your application name
+      - APPLICATION_NAME=tutor-calendar-mgr
+      # Replace with this 435320931996.dkr.ecr.ap-south-1.amazonaws.com to your repository URI
+      - REPOSITORY_URI=416519539882.dkr.ecr.ap-southeast-1.amazonaws.com/$APPLICATION_NAME
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - echo in buildspec, SPRING_PROFILE_ACTIVE = $SPRING_PROFILE_ACTIVE, $DB_PORT = $DB_PORT, DB_URL = $DB_URL, MYSQLDB_DATABASE=$MYSQLDB_DATABASE, MYSQLDB_USER=$MYSQLDB_USER, MYSQLDB_ROOT_PASSWORD=$MYSQLDB_ROOT_PASSWORD
+      #      - docker build --build-arg SPRING_PROFILE=$SPRING_PROFILE_ACTIVE --build-arg DB_PORT=$DB_PORT --build-arg DB_URL=$DB_URL --build-arg MYSQLDB_DATABASE=$MYSQLDB_DATABASE --build-arg MYSQLDB_USER=$MYSQLDB_USER --build-arg MYSQLDB_ROOT_PASSWORD=$MYSQLDB_ROOT_PASSWORD --build-arg JWT_SECRET=$JWT_SECRET --build-arg JWT_EXPIRY_DURATION=$JWT_EXPIRY_DURATION -t $APPLICATION_NAME:$IMAGE_TAG .
+      - docker build -t $APPLICATION_NAME:$IMAGE_TAG .
+      - docker tag $APPLICATION_NAME:$IMAGE_TAG $REPOSITORY_URI:$IMAGE_TAG
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo pushing to repo
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - echo Writing image definitions file...
+      # Give your container name
+      - printf '[{"name":"container-tutor-calendar-mgr", "imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      # redeploy ecs
+      #      - aws ecr get-login-password --region ap-southeast-1 | aws ecs update-service --cluster peerTutor-cluster --service service-account-mgr --force-new-deployment --region ap-southeast-1
+      #      - aws ecs update-service --cluster peerTutor-cluster --service service-account-mgr --force-new-deployment --region ap-southeast-1
+      - echo ran redeploy command
+artifacts:
+  files:
+    - imagedefinitions.json
