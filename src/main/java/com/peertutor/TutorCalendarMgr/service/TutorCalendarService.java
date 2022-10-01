@@ -1,5 +1,6 @@
 package com.peertutor.TutorCalendarMgr.service;
 
+import com.peertutor.TutorCalendarMgr.service.TutorSvc;
 import com.peertutor.TutorCalendarMgr.repository.TutorCalendarRepository;
 import com.peertutor.TutorCalendarMgr.service.dto.TutorCalendarMgrDTO;
 import com.peertutor.TutorCalendarMgr.service.mapper.TutorCalendarMapper;
@@ -13,14 +14,16 @@ public abstract class TutorCalendarService implements TutorCalendarRepository {
 	private static final Logger logger = LoggerFactory.getLogger(TutorCalendarService.class);
     private final TutorCalendarMapper tutorCalendarMapper;
     private TutorCalendarRepository tutorCalendarRepository;
+    private TutorSvc tutorSvc;
     
     public TutorCalendarMgrDTO addAvailableDatetime(TutorCalendarReq req) {
     	TutorCalendar tutorCalendar = tutorCalendarRepository.findById(req.id);
     	if(tutorCalendar == null) {
     		tutorCalendar = new TutorCalendar();
     	}
-
-    	tutorCalendar.setTutorID(req.tutorID);
+    	Long tutorID = tutorSvc.getTutorId();
+    	
+    	tutorCalendar.setTutorID(tutorID);
     	tutorCalendar.setAvailableDate(req.availableDate);
     	tutorCalendar.setStartTime(req.startTime);
     	tutorCalendar.setEndTime(req.endTime);
