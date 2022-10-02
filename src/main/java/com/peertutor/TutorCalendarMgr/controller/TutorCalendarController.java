@@ -100,7 +100,7 @@ public class TutorCalendarController {
 		return ResponseEntity.ok().body(res);
 	}
 	@PostMapping(path = "/review")
-	public @ResponseBody ResponseEntity<TutorCalendarRes> updateReview(@RequestBody  @Valid TutorCalendarReq req) {
+	public @ResponseBody ResponseEntity<TutorCalendarRes> getReview(@RequestBody  @Valid TutorCalendarReq req) {
 
 		boolean result = authService.getAuthentication(req.name, req.sessionToken);
 		if (!result) {
@@ -111,7 +111,7 @@ public class TutorCalendarController {
 		getTutorCalendar = tutorCalendarService.getTutorCalendar(req.id);
 
 		if (getTutorCalendar == null) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 		}
 
 		TutorCalendarRes res = new TutorCalendarRes(getTutorCalendar);
