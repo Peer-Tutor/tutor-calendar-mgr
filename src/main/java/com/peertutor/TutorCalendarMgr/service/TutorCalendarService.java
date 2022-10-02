@@ -16,6 +16,10 @@ public class TutorCalendarService{
     private TutorCalendarRepository tutorCalendarRepository;
     private TutorSvc tutorSvc;
     
+    public TutorCalendarService(TutorCalendarRepository tutorCalendarRepository, TutorCalendarMapper tutorCalendarMapper) {
+        this.tutorCalendarRepository = tutorCalendarRepository;
+        this.tutorCalendarMapper = tutorCalendarMapper;
+    }
     public TutorCalendarMgrDTO addAvailableDatetime(TutorCalendarReq req) {
     	TutorCalendar tutorCalendar = tutorCalendarRepository.findById(req.id);
     	if(tutorCalendar == null) {
