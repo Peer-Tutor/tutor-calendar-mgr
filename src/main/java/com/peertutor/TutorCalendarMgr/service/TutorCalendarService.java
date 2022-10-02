@@ -39,7 +39,8 @@ public abstract class TutorCalendarService implements TutorCalendarRepository {
         return result;
     }
     public TutorCalendarMgrDTO getTutorCalendar(Long tutorID) {
-    	TutorCalendar tutorCalendar = tutorCalendarRepository.findByTutorId(tutorID);
+    	Long tutorID1 = tutorSvc.getTutorId();
+    	TutorCalendar tutorCalendar = tutorCalendarRepository.findByTutorId(tutorID1);
 
     	if (tutorCalendar == null) {
             return null;
