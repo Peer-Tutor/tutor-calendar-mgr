@@ -11,27 +11,27 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 public class TutorSvc {
-	 @Autowired
-	 AppConfig appConfig;
-	 
-	 public Long getTutorId() {
-		 String url = appConfig.getTuitionOrderMgr().get("url");
-	        String port = appConfig.getTuitionOrderMgr().get("port");
+	@Autowired
+	AppConfig appConfig;
 
-	        String endpoint = url + "/tutor";
-	        System.out.println("endpoint" + endpoint);
+	public Long getTutorId() {
+		String url = appConfig.getTuitionOrderMgr().get("url");
+		String port = appConfig.getTuitionOrderMgr().get("port");
 
-	        MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-	        headers.add("Content-Type", "application/json");
+		String endpoint = url + "/tutor";
+		System.out.println("endpoint" + endpoint);
 
-	        RestTemplate restTemplate = new RestTemplate();
-	        restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-	        TutorReq req = new TutorReq();
-	        Long tutorTutorId = req.getTutorId();
+		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+		headers.add("Content-Type", "application/json");
 
-	        HttpEntity<AuthenticationReq> request = new HttpEntity<AuthenticationReq>(req, headers);
+		RestTemplate restTemplate = new RestTemplate();
+		restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+		TutorReq req = new TutorReq();
+		Long tutorTutorId = req.getTutorId();
 
-	        tutorTutorId = restTemplate.postForObject(endpoint, request, Long.class);
-	        return tutorTutorId;
-	 }
+		HttpEntity<AuthenticationReq> request = new HttpEntity<AuthenticationReq>(req, headers);
+
+		tutorTutorId = restTemplate.postForObject(endpoint, request, Long.class);
+		return tutorTutorId;
+	}
 }
