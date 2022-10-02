@@ -9,7 +9,7 @@ import com.peertutor.TutorCalendarMgr.model.viewmodel.request.TutorCalendarReq;
 
 
 @Service
-public abstract class TutorCalendarService implements TutorCalendarRepository {
+public class TutorCalendarService{
 	
 	private static final Logger logger = LoggerFactory.getLogger(TutorCalendarService.class);
     private final TutorCalendarMapper tutorCalendarMapper;
