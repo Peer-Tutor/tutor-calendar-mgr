@@ -6,7 +6,6 @@ import com.peertutor.TutorCalendarMgr.model.viewmodel.response.TutorCalendarRes;
 import com.peertutor.TutorCalendarMgr.repository.TutorCalendarRepository;
 import com.peertutor.TutorCalendarMgr.service.AuthService;
 import com.peertutor.TutorCalendarMgr.service.TutorCalendarService;
-import com.peertutor.TutorCalendarMgr.service.dto.TutorCalendarMgrDTO;
 import com.peertutor.TutorCalendarMgr.util.AppConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,11 +39,11 @@ public class TutorCalendarController {
 	@PostMapping(path = "/calendar")
 	@Transactional
 	public @ResponseBody ResponseEntity<List<TutorCalendar>> addAvailableDate(@RequestBody  @Valid TutorCalendarReq req) {
-/*
+
 		boolean result = authService.getAuthentication(req.name, req.sessionToken);
 		if (!result) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-		}*/
+		}
 		if (req.availableDates == null) {
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 		}
@@ -59,12 +58,15 @@ public class TutorCalendarController {
 	}
 
 	@GetMapping(path = "/calendar")
-	public @ResponseBody ResponseEntity<TutorCalendarRes> getReview(@RequestParam(name = "tutorId") Long tutorId) {
-/*
-		boolean result = authService.getAuthentication(req.name, req.sessionToken);
+	public @ResponseBody ResponseEntity<TutorCalendarRes> getReview(
+			@RequestParam(name = "name") String name,
+			@RequestParam(name = "sessionToken") String sessionToken,
+			@RequestParam(name = "tutorId") Long tutorId) {
+
+		boolean result = authService.getAuthentication(name, sessionToken);
 		if (!result) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-		}*/
+		}
 
 		TutorCalendarRes tutorCalendar = tutorCalendarService.getTutorCalendar(tutorId);
 		return ResponseEntity.ok().body(tutorCalendar);

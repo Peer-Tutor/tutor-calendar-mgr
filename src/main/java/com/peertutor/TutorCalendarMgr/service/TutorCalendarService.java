@@ -4,7 +4,6 @@ import com.peertutor.TutorCalendarMgr.model.TutorCalendar;
 import com.peertutor.TutorCalendarMgr.model.viewmodel.request.TutorCalendarReq;
 import com.peertutor.TutorCalendarMgr.model.viewmodel.response.TutorCalendarRes;
 import com.peertutor.TutorCalendarMgr.repository.TutorCalendarRepository;
-import com.peertutor.TutorCalendarMgr.service.dto.TutorCalendarMgrDTO;
 import com.peertutor.TutorCalendarMgr.service.mapper.TutorCalendarMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.sql.Date;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 
