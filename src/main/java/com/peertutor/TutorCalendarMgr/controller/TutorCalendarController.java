@@ -71,4 +71,20 @@ public class TutorCalendarController {
 		TutorCalendarRes tutorCalendar = tutorCalendarService.getTutorCalendar(tutorId);
 		return ResponseEntity.ok().body(tutorCalendar);
 	}
+
+	@DeleteMapping(path = "/calendar")
+	@Transactional
+	public @ResponseBody ResponseEntity<TutorCalendarRes> getReview(
+			@RequestParam(name = "name") String name,
+			@RequestParam(name = "sessionToken") String sessionToken,
+			@RequestParam(name = "tutorId") Long tutorId,
+			@RequestParam(name = "dates") String dates) {
+		boolean result = authService.getAuthentication(name, sessionToken);
+		if (!result) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+		}
+
+		tutorCalendarService.deleteAvailableDates(tutorId, dates);
+		return ResponseEntity.ok().body(null);
+	}
 }

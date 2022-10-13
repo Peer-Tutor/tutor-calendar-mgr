@@ -10,6 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,5 +54,22 @@ public class TutorCalendarService{
         List<Date> dates = tutorCalendar.stream().map(c -> c.getAvailableDate()).collect(Collectors.toList());
         Collections.sort(dates);
         return new TutorCalendarRes(dates);
+    }
+
+    public void deleteAvailableDates(Long tutorID, String dates) {
+        List<TutorCalendar> tutorCalendar = tutorCalendarRepository.findAllByTutorId(tutorID);
+
+        List<Date> result = Arrays.asList(dates.replaceAll("[()\\[\\]]", "").split(",")).stream().map(
+                date -> {
+                    try {
+                        java.util.Date utilDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+                        return new Date(utilDate.getTime());
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+        ).collect(Collectors.toList());
+
+        tutorCalendarRepository.deleteAllByTutorIdAndAvailableDateIn(tutorID, result);
     }
 }
