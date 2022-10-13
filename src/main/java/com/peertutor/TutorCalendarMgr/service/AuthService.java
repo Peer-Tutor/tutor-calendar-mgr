@@ -1,8 +1,7 @@
 package com.peertutor.TutorCalendarMgr.service;
 
-import com.peertutor.TutorCalendarMgr.util.AppConfig;
 import com.peertutor.TutorCalendarMgr.model.viewmodel.request.AuthenticationReq;
-
+import com.peertutor.TutorCalendarMgr.util.AppConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
