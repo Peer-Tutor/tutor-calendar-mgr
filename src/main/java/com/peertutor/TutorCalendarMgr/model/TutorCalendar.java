@@ -1,15 +1,14 @@
 package com.peertutor.TutorCalendarMgr.model;
 
-import java.sql.Timestamp;
-import java.util.Date;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+import java.sql.Date;
 import java.util.Objects;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
 @Entity
-@Table(name = "tutorcalendar")
+@Table(name = "tutor_calendar")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class TutorCalendar {
 	@Id
@@ -17,42 +16,11 @@ public class TutorCalendar {
     private Long id;
 	
 	@Column(name = "tutor_id", nullable = false, unique = true)
-	private Long tutorID;
+	private Long tutorId;
 	
-	@Column(name = "availableDate", nullable = false, unique = true)
-	private Date  availableDate;
-	
+	@Column(name = "available_date", nullable = false, unique = true)
+	private Date availableDate;
 
-	@Column(name = "startTime", nullable = false, unique = true)
-	private Timestamp startTime;
-	
-	@Column(name = "endTime", nullable = false, unique = true)
-	private Timestamp endTime;
-
-
-    public Date getAvailableDate() {
-		return availableDate;
-	}
-
-	public void setAvailableDate(Date availableDate) {
-		this.availableDate = availableDate;
-	}
-
-	public Timestamp getStartTime() {
-		return startTime;
-	}
-
-	public void setStartTime(Timestamp startTime) {
-        this.startTime = startTime;
-    }
-
-    public Timestamp getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Timestamp endTime) {
-        this.startTime = endTime;
-    }
 	public Long getId() {
 		return id;
 	}
@@ -60,32 +28,33 @@ public class TutorCalendar {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public Long getTutorID() {
-		return tutorID;
+
+	public Long getTutorId() {
+		return tutorId;
 	}
 
-	public void setTutorID(Long tutorID) {
-		this.tutorID = tutorID;
+	public void setTutorId(Long tutorID) {
+		this.tutorId = tutorID;
 	}
 
-	
+	public Date getAvailableDate() {
+		return availableDate;
+	}
+
+	public void setAvailableDate(Date availableDate) {
+		this.availableDate = availableDate;
+	}
 
 	@Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof TutorCalendar)) return false;
+		TutorCalendar that = (TutorCalendar) o;
+		return getId().equals(that.getId()) && getTutorId().equals(that.getTutorId()) && getAvailableDate().equals(that.getAvailableDate());
+	}
 
-        TutorCalendar tutorCalendar = (TutorCalendar) o;
-        if (tutorCalendar.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), tutorCalendar.getId()) &&
-                Objects.equals(getAvailableDate(), tutorCalendar.getAvailableDate()) &&
-                Objects.equals(getStartTime(), tutorCalendar.getStartTime()) &&
-                Objects.equals(getEndTime(), tutorCalendar.getEndTime());
-    }
+	@Override
+	public int hashCode() {
+		return Objects.hash(getId(), getTutorId(), getAvailableDate());
+	}
 }
