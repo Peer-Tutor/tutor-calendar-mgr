@@ -1,7 +1,7 @@
 package com.peertutor.TutorCalendarMgr.service.mapper;
 
-import com.peertutor.TutorCalendarMgr.service.dto.TutorCalendarMgrDTO;
 import com.peertutor.TutorCalendarMgr.model.TutorCalendar;
+import com.peertutor.TutorCalendarMgr.service.dto.TutorCalendarMgrDTO;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

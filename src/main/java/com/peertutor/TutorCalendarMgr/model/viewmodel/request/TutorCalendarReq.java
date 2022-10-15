@@ -1,11 +1,10 @@
 package com.peertutor.TutorCalendarMgr.model.viewmodel.request;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-
-import javax.persistence.Column;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.sql.Date;
+import java.util.List;
+
 public class TutorCalendarReq {
 	@NotNull
     @NotEmpty
@@ -14,14 +13,10 @@ public class TutorCalendarReq {
     @NotNull
     @NotEmpty
     public String sessionToken;
-    
+
     public Long id;
 
-	public Long tutorID;
+	public Long tutorId;
 
-	public Date  availableDate;
-	
-	public Timestamp startTime;
-	
-	public Timestamp endTime;
+	public List<Date> availableDates;
 }
